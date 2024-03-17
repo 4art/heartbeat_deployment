@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: heartbeat-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: heartbeat-frontend
+  template:
+    metadata:
+      labels:
+        app: heartbeat-frontend
+    spec:
+      containers:
+        - name: heartbeat-frontend
+          image: 01798538579/react_heartbeat:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: REACT_APP_BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: heartbeat-config
+                  key: REACT_APP_BACKEND_URL
